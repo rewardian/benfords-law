@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/jfyne/csvd"
 	"github.com/rewardian/benfords-law/layouts"
 
 	"github.com/gorilla/mux"
@@ -124,7 +124,7 @@ func ParseCSV(csvFile multipart.File, filename string, column int) (data string,
 	var totalRows int = 0
 	var distributionMap = make(map[int]int, 9)
 
-	r := csv.NewReader(csvFile)
+	r := csvd.NewReader(csvFile)
 
 	for {
 		record, err := r.Read()
