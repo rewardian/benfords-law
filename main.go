@@ -188,5 +188,5 @@ func main() {
 		Handle("/", pages.Home).
 		Methods("GET")
 	fmt.Println("Starting server.")
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":9021", router)
 }
