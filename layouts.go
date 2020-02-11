@@ -1,4 +1,4 @@
-package layouts
+package main
 
 import (
 	"html/template"
@@ -38,7 +38,7 @@ type Page struct {
 }
 
 // NewPage generates the view based on the arguments provided to NewView.
-func NewPage() *Page {
+func newPage() *Page {
 	return &Page{
 		Home: NewView(
 			"bootstrap", "home"),
@@ -64,7 +64,7 @@ func (v *View) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // NewView includes all additional layout files for the site
-func NewView(layout string, files ...string) *View {
+func newView(layout string, files ...string) *View {
 	addTemplatePath(files)
 	addTemplateExt(files)
 	files = append(files, layoutFiles()...)

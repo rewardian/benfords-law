@@ -11,10 +11,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jfyne/csvd"
-	"github.com/rewardian/benfords-law/layouts"
-
 	"github.com/gorilla/mux"
+	"github.com/jfyne/csvd"
 )
 
 // Digit represents a single digit (e.g. "1"), the number of times it's detected within the input CSV, and the calculated percentage.
@@ -87,7 +85,7 @@ func removeIndex(slice []int, index int) []int {
 // BenfordValidator ... well, I mean, you can see what it does...
 // If a digit's distribution is over 30% of the total number of rows,
 // We return a True value.
-func BenfordValidator(percent float64) bool {
+func benfordValidator(percent float64) bool {
 	if percent >= 30 {
 		return true
 	}
@@ -97,7 +95,7 @@ func BenfordValidator(percent float64) bool {
 // ReceiveFiles is the default HTTP handler for POST requests in this application. This
 // handler expects a CSV file as its input and outputs a JSON-encoded description of the
 // digit distribution per Benford's law.
-func ReceiveFiles(w http.ResponseWriter, r *http.Request) {
+func receiveFiles(w http.ResponseWriter, r *http.Request) {
 	file, handler, err := r.FormFile("file")
 	if err != nil {
 		panic(err)
@@ -108,7 +106,7 @@ func ReceiveFiles(w http.ResponseWriter, r *http.Request) {
 
 	defer file.Close()
 
-	data, err := ParseCSV(file, filename, column)
+	data, err := parseCSV(file, filename, column)
 
 	if err != nil {
 		io.WriteString(w, "There was an error parsing the sent CSV file. Please try again.\n")
@@ -117,10 +115,10 @@ func ReceiveFiles(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ParseCSV contains most of the logic: receiving a CSV file, recording the first digit for each
+// parseCSV contains most of the logic: receiving a CSV file, recording the first digit for each
 // row in a specific column, storing this data in an associative array, and then building the
 // eventual JSON output.
-func ParseCSV(csvFile multipart.File, filename string, column int) (data string, err error) {
+func parseCSV(csvFile multipart.File, filename string, column int) (data string, err error) {
 	var totalRows int = 0
 	var distributionMap = make(map[int]int, 9)
 
@@ -164,7 +162,7 @@ func ParseCSV(csvFile multipart.File, filename string, column int) (data string,
 			payload.AddItem(values)
 		}
 		if digit == 1 {
-			payload.BenfordValidation = BenfordValidator(percent)
+			payload.BenfordValidation = benfordValidator(percent)
 		}
 	}
 
@@ -178,12 +176,12 @@ func ParseCSV(csvFile multipart.File, filename string, column int) (data string,
 }
 
 func main() {
-	pages := layouts.NewPage()
+	pages := newPage()
 	router := mux.NewRouter()
 	router.
 		Path("/").
 		Methods("POST").
-		HandlerFunc(ReceiveFiles)
+		HandlerFunc(receiveFiles)
 	router.
 		Handle("/", pages.Home).
 		Methods("GET")
