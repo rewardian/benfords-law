@@ -54,11 +54,12 @@ func calculatePercent(count int, totalRows int) (percent float64) {
 	return math.Round(float64(count) / float64(totalRows) * 100)
 }
 
-// Converts the submitted column into zero-based numbering. TODO: Check for letters, etc.
+// Converts the submitted column into zero-based numbering.
+// TODO: Handle invalid inputs ("A") better.
 func sanitizeColumnValue(column string) int {
 	newValue, err := strconv.Atoi(column)
 	if err != nil {
-		panic(err)
+		newValue = 0
 	}
 	if newValue > 0 {
 		newValue--
