@@ -7,7 +7,10 @@ A demo is hosted at [https://benford.lph.pw](https://benford.lph.pw).
 * Go 1.13
 
 ## Installation
-_git clone https://github.com/rewardian/benfords-law.git_ 
-_docker build -t benfords-law ._
+```
+git clone https://github.com/rewardian/benfords-law.git 
+docker build -t benfords-law .
+docker run benfords-law
+```
 
 main.go is configured to start the HTTP server on :9021. For my demo, I've configured nginx to proxy into the container's exposed port.
