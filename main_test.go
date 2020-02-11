@@ -6,6 +6,17 @@ import (
 	"testing"
 )
 
+var (
+	map1 = map[int]int{
+		1: 5000,
+		8: 45,
+		7: 15,
+		9: 600,
+		4: 1200,
+		0: 700,
+	}
+)
+
 func TestBenfordValidator(t *testing.T) {
 	values := []struct {
 		percent float64
@@ -83,7 +94,7 @@ func TestSanitizeColumnValue(t *testing.T) {
 		column string
 		want   int
 	}{
-		{"7", 0},
+		{"7", 6},
 		{"1", 0},
 		{"4", 3},
 	}
@@ -99,5 +110,19 @@ func TestSanitizeColumnValue(t *testing.T) {
 			}
 		})
 	}
+
+}
+
+func TestSortMap(t *testing.T) {
+	want := []int{0, 0, 0, 0, 1, 4, 7, 8, 9}
+
+	testname := fmt.Sprintf("%s", "map1")
+
+	t.Run(testname, func(t *testing.T) {
+		answer := sortMap(map1)
+		if !reflect.DeepEqual(answer, want) {
+			t.Errorf("Got %v, wanted %v", answer, want)
+		}
+	})
 
 }

@@ -36,7 +36,8 @@ func (payload *Payload) AddItem(Value Digit) []Digit {
 }
 
 // This returns a sorted list of indexes from the provided map, as maps in Golang are unordered.
-// The output's certainly prettier this way.
+// This is in case one of the leading digits isn't represented in the dataset.
+// Also removes any zero key.
 func sortMap(distributionMap map[int]int) []int {
 	var keys = make([]int, 10)
 	for k := range distributionMap {
