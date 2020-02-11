@@ -118,7 +118,7 @@ func receiveFiles(w http.ResponseWriter, r *http.Request) {
 // parseCSV contains most of the logic: receiving a CSV file, recording the first digit for each
 // row in a specific column, storing this data in an associative array, and then building the
 // eventual JSON output.
-func parseCSV(csvFile multipart.File, filename string, column int) (data string, err error) {
+func ParseCSV(csvFile multipart.File, filename string, column int) (data string, err error) {
 	var totalRows int = 0
 	var distributionMap = make(map[int]int, 9)
 
