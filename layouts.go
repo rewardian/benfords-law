@@ -40,7 +40,7 @@ type Page struct {
 // NewPage generates the view based on the arguments provided to NewView.
 func newPage() *Page {
 	return &Page{
-		Home: NewView(
+		Home: newView(
 			"bootstrap", "home"),
 	}
 }
