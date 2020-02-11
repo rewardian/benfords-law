@@ -53,7 +53,7 @@ func calculatePercent(count int, totalRows int) (percent float64) {
 	return math.Round(float64(count) / float64(totalRows) * 100)
 }
 
-// Converts the submitted column into an integer, avoiding
+// Converts the submitted column into zero-based numbering. TODO: Check for letters, etc.
 func sanitizeColumnValue(column string) int {
 	newValue, err := strconv.Atoi(column)
 	if err != nil {
@@ -82,9 +82,7 @@ func removeIndex(slice []int, index int) []int {
 	return append(ret, slice[index+1:]...)
 }
 
-// BenfordValidator ... well, I mean, you can see what it does...
-// If a digit's distribution is over 30% of the total number of rows,
-// We return a True value.
+// Primary check on the application.
 func benfordValidator(percent float64) bool {
 	if percent >= 30 {
 		return true
@@ -115,10 +113,10 @@ func receiveFiles(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// parseCSV contains most of the logic: receiving a CSV file, recording the first digit for each
+// ParseCSV contains most of the logic: receiving a CSV file, recording the first digit for each
 // row in a specific column, storing this data in an associative array, and then building the
 // eventual JSON output.
-func ParseCSV(csvFile multipart.File, filename string, column int) (data string, err error) {
+func parseCSV(csvFile multipart.File, filename string, column int) (data string, err error) {
 	var totalRows int = 0
 	var distributionMap = make(map[int]int, 9)
 
